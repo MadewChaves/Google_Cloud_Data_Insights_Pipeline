@@ -1,0 +1,56 @@
+Queries
+
+-- Find the avarege fare amount for each hour of the day.
+-- Encontre a média de valor da tarifa para cada hora do dia.
+SELECT pick_hour, AVG(fare_amount) AS avarage_fare_amount_per_hour
+FROM trip_project_dataset.fact_table as A
+JOIN trip_project_dataset.datetime_dim AS B ON A.datetime_id = B.datetime_id
+GROUP BY pick_hour
+ORDER BY pick_hour ASC;
+
+-- Find the top 10 pick-up locations based on the numbers of trips.
+-- Encontre os 10 primeiros locações de coleta baseados no número de viagens.
+SELECT PULocationID, COUNT(PULocationID) AS Counting_top_pick_up_locations
+FROM trip_project_dataset.fact_table AS A
+JOIN trip_project_dataset.pick_up_location_dim as B ON A.pick_up_id = B.pick_up_id
+GROUP BY PULocationID
+ORDER BY Counting_top_pick_up_locations DESC
+LIMIT 10;
+
+-- Find the sum of fare amount by the type of payment
+-- Encontre a soma dos valores de tarifa por tipos de pagamento
+SELECT payment_type_name, ROUND(SUM(fare_amount), 2) AS fare_amount_per_payment_type
+FROM trip_project_dataset.fact_table AS A
+JOIN trip_project_dataset.payment_type_dim AS B ON A.payment_type_id = B.payment_type_id
+GROUP BY Payment_type_name;
+
+-- Creation of the analytic table for data visualization.
+-- Criação da tabela analítica para visualização de dados.
+CREATE OR REPLACE TABLE trip_project_dataset.table_analitycs AS (
+SELECT 
+ft.VendorID,
+ft.fare_amount,
+ft.extra,
+ft.mta_tax,
+ft.tip_amount,
+ft.tolls_amount,
+ft.improvement_surcharge,
+ft.passenger_count,
+dd.lpep_pickup_datetime,
+dd.lpep_dropoff_datetime,
+di.trip_distance,
+rc.rate_code_name,
+pt.payment_type_name
+FROM 
+trip_project_dataset.fact_table as ft
+JOIN trip_project_dataset.datetime_dim as dd ON ft.datetime_id = dd.datetime_id
+JOIN trip_project_dataset.distance_dim as di ON ft.distance_id = di.distance_id
+JOIN trip_project_dataset.rate_code_dim as rc ON ft.rate_code_id = rc.rate_code_id
+JOIN trip_project_dataset.drop_off_location_dim as dl ON ft.drop_off_id = dl.drop_off_id
+JOIN trip_project_dataset.payment_type_dim as pt ON ft.payment_type_id = pt.payment_type_id
+JOIN trip_project_dataset.pick_up_location_dim as pl ON ft.pick_up_id = pl.pick_up_id
+JOIN trip_project_dataset.trip_type_dim as tt ON ft.trip_type_id = tt.trip_type_id);
+
+
+
+
