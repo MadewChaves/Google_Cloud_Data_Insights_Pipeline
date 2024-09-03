@@ -24,7 +24,7 @@ Este projeto simplifica o tratamento e a análise de dados utilizando os serviç
 Google Cloud Storage: Os dados brutos são armazenados aqui para serem processados posteriormente.
 
 # Processamento ETL:
-Mage VM no Compute Engine: Utiliza-se uma máquina virtual com MAGE AI, um orquestrador, para realizar as operações de extração, transformação e carga dos dados.
+Mage no Compute Engine: Utiliza-se uma máquina virtual com MAGE AI, um orquestrador, para realizar as operações de extração, transformação e carga dos dados.
 
 # Análise de Dados:
 BigQuery: Ferramenta de análise de dados que permite consultas SQL em grandes volumes de dados de forma rápida e eficiente.
